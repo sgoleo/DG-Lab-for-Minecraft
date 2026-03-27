@@ -1,4 +1,4 @@
-# **DG\_LAB Fabric Mod**
+# **DG-LAB For Fabric Mod**
 
 _This mod is developed for Minecraft's Fabric loader, enabling connectivity between the game and DG\_LAB devices._
 
@@ -18,7 +18,7 @@ Important Notes
 
 *   Supports 1.21.11 / 1.21.9 / 1.21.8 / 1.21 / 1.20.1 / 1.19.2 / 1.18.2
     
-*   Planned support for 1.16.5
+*   Planned support for 26.1
     
 \=======================================================================
 
