@@ -127,7 +127,7 @@ public class Dg_labClient implements ClientModInitializer {
                 drawContext.drawTextWithShadow(client.textRenderer, orderedText1, x, y + 9, 0xFFFFFF);
             }
             else {
-                Text strengthText = Text.literal("未连接");
+                Text strengthText = Text.literal("未連接");
                 OrderedText orderedText = strengthText.asOrderedText();
                 drawContext.drawTextWithShadow(client.textRenderer, orderedText, x, y, 0xFF0000);
             }
