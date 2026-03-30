@@ -88,7 +88,7 @@ public class ConfigScreen extends Screen {
             protected void applyValue() {
                 int tmp = (int) (this.value * 200);
                 secondPlayerQuitStrength = tmp;
-                SPQS.setMessage(Text.literal("2P退出强度：" + ((tmp == 0)? "已关闭" : tmp)));
+                SPQS.setMessage(Text.literal("2P退出强度：" + ((tmp == 0)? "已關閉" : tmp)));
             }
         };
 
@@ -102,11 +102,11 @@ public class ConfigScreen extends Screen {
                 int tmp = (int) (this.value * width1);
                 modConfig.setRenderingPositionX(tmp);
                 if (modConfig.getRenderingPositionX() >= width1 || modConfig.getRenderingPositionY() >= height1) {
-                    this.setMessage(Text.literal("已关闭强度显示"));
-                    RenderingPositionY.setMessage(Text.literal("已关闭强度显示"));
+                    this.setMessage(Text.literal("已關閉强度顯示"));
+                    RenderingPositionY.setMessage(Text.literal("已關閉强度顯示"));
                 } else {
-                    this.setMessage(Text.literal("显示位置X:" + tmp));
-                    RenderingPositionY.setMessage(Text.literal("显示位置Y:" + modConfig.getRenderingPositionY()));
+                    this.setMessage(Text.literal("顯示位置X:" + tmp));
+                    RenderingPositionY.setMessage(Text.literal("顯示位置Y:" + modConfig.getRenderingPositionY()));
                 }
             }
         };
@@ -121,21 +121,21 @@ public class ConfigScreen extends Screen {
                 int tmp = (int) (this.value * height1);
                 modConfig.setRenderingPositionY(tmp);
                 if (modConfig.getRenderingPositionX() >= width1 || modConfig.getRenderingPositionY() >= height1) {
-                    this.setMessage(Text.literal("已关闭强度显示"));
-                    RenderingPositionX.setMessage(Text.literal("已关闭强度显示"));
+                    this.setMessage(Text.literal("已關閉强度顯示"));
+                    RenderingPositionX.setMessage(Text.literal("已關閉强度顯示"));
                 } else {
-                    this.setMessage(Text.literal("显示位置Y:" + tmp));
-                    RenderingPositionX.setMessage(Text.literal("显示位置X:" + modConfig.getRenderingPositionX()));
+                    this.setMessage(Text.literal("顯示位置Y:" + tmp));
+                    RenderingPositionX.setMessage(Text.literal("顯示位置X:" + modConfig.getRenderingPositionX()));
                 }
             }
         };
 
-        MaxStrength = ButtonWidget.builder(Text.literal((modConfig.isRenderingMax()) ? "开" : "关"), button -> {
+        MaxStrength = ButtonWidget.builder(Text.literal((modConfig.isRenderingMax()) ? "開" : "關"), button -> {
             modConfig.setRenderingMax(!modConfig.isRenderingMax());
-            MaxStrength.setMessage(Text.literal((modConfig.isRenderingMax()) ? "开" : "关"));
+            MaxStrength.setMessage(Text.literal((modConfig.isRenderingMax()) ? "開" : "關"));
         }).dimensions(RenderingPositionY.getX() + RenderingPositionX.getWidth(), 140 - ButtonDistance - ButtonHeight, 12, ButtonHeight).tooltip(Tooltip.of(Text.literal("是否开启最大强度显示"))).build();
 
-        saveFile = ButtonWidget.builder(Text.literal("保存配置到文件"), button -> {
+        saveFile = ButtonWidget.builder(Text.literal("保存設定到文件"), button -> {
                     strengthConfig.savaFile();
                     modConfig.savaFile();
                     WaveformConfig.saveWaveform(waveformMap);
@@ -144,33 +144,33 @@ public class ConfigScreen extends Screen {
 
 
 
-        webSocketConfig = ButtonWidget.builder(Text.literal("连接设置"), button -> {
+        webSocketConfig = ButtonWidget.builder(Text.literal("連接設定"), button -> {
                     Screen WebSocketConfigScreen = new WebSocketConfigScreen();
                     client.setScreen(WebSocketConfigScreen);
                 })
                 .dimensions(width / 2 + 5, 20, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.of(Text.literal("点击修改连接设置\n非必要无需修改"))).build();
 
-        StrengthConfig = ButtonWidget.builder(Text.literal("强度设置"), button -> {
+        StrengthConfig = ButtonWidget.builder(Text.literal("强度設定"), button -> {
             Screen strengthConfigScreen = new StrengthConfigScreen();
             client.setScreen(strengthConfigScreen);
         }).dimensions((int) ((double) width / 2 - (width * 0.4) - 5), 20 + ButtonHeight + ButtonDistance, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.of(Text.literal("点击修改强度设置"))).build();
 
-        WaveFormConfig = ButtonWidget.builder(Text.literal("波形设置"), button -> {
+        WaveFormConfig = ButtonWidget.builder(Text.literal("波形設定"), button -> {
             Screen waveformConfigScreen = new WaveformConfigScreen();
             client.setScreen(waveformConfigScreen);
         }).dimensions(width / 2 + 5, 20 + ButtonHeight + ButtonDistance, (int) (width * 0.4), ButtonHeight).tooltip((Tooltip.of(Text.literal(":P")))).build();
 
-        createQR = ButtonWidget.builder(Text.literal("创建连接二维码并打开"), button -> {
+        createQR = ButtonWidget.builder(Text.literal("創建連接二維碼並打開"), button -> {
             ToolQR.CreateQR();
         }).dimensions((int) ((double) width / 2 - (width * 0.4) - 5), 140 - ButtonDistance - ButtonHeight, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.of(Text.literal("图片默认生成于此地址:\n" + System.getProperty("user.dir")))).build();
 
 
-        TwoPlayerMode = ButtonWidget.builder(Text.literal((twoPlayerMode) ? "本地双人模式：开" : "本地双人模式：关"), button -> {
+        TwoPlayerMode = ButtonWidget.builder(Text.literal((twoPlayerMode) ? "本地雙人模式：开" : "本地雙人模式：关"), button -> {
             if(!client.isIntegratedServerRunning()) return;
             IntegratedServer server = client.getServer();
             if(!(server != null && server.isRemote())) return;
             twoPlayerMode = !twoPlayerMode;
-            TwoPlayerMode.setMessage(Text.literal((twoPlayerMode) ? "本地双人模式：开" : "本地双人模式：关"));
+            TwoPlayerMode.setMessage(Text.literal((twoPlayerMode) ? "本地雙人模式：开" : "本地雙人模式：关"));
         }).dimensions((int) ((double) width / 2 - (width * 0.4) - 5), 140 - (2 * (ButtonDistance + ButtonHeight)), (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.of(Text.literal("只有在单人模式开启局域网联机\n并且2p设置有人且在线才可启用\n2p退出游戏自动关闭\n本地双人模式每次启动游戏需要重新设置"))).build();
 
         secondPlayerName = new TextFieldWidget(this.textRenderer, (int) ((double) width / 2 + 6 + (int) (width * 0.2)), 140 - (2 * (ButtonDistance + ButtonHeight)), (int) (width * 0.2), ButtonHeight, Text.literal("输入玩家名字"));
@@ -202,7 +202,7 @@ public class ConfigScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        TwoPlayerMode.setMessage(Text.literal((twoPlayerMode) ? "本地双人模式：开" : "本地双人模式：关"));
+        TwoPlayerMode.setMessage(Text.literal((twoPlayerMode) ? "本地雙人模式：開" : "本地雙人模式：關"));
     }
 
 }
