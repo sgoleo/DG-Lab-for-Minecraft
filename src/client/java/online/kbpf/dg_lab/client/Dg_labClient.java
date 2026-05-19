@@ -1,7 +1,7 @@
 package online.kbpf.dg_lab.client;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import online.kbpf.dg_lab.Dg_lab;
 import online.kbpf.dg_lab.client.Tool.DGWaveformTool;
 import online.kbpf.dg_lab.client.command.Default;
@@ -15,7 +15,7 @@ import online.kbpf.dg_lab.client.webSocketServer.webSocketServer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.KeyMapping;
 import com.mojang.blaze3d.platform.InputConstants;
 import org.lwjgl.glfw.GLFW;
@@ -38,7 +38,7 @@ public class Dg_labClient implements ClientModInitializer {
     private static KeyMapping keyBinding;
     private final Screen configScreen = new ConfigScreen();
 
-    private static final ResourceLocation HUD_ID = ResourceLocation.fromNamespaceAndPath("dglab", "hud");
+    private static final Identifier HUD_ID = Identifier.fromNamespaceAndPath("dglab", "hud");
 
 
     @Override

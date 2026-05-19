@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MultiPlayerGameMode.class)
 public class ClientPlayerInteractionManagerMixin {
 
-    @Inject(method = "breakBlock", at = @At("HEAD"))
+    @Inject(method = "destroyBlock", at = @At("HEAD"))
     private void onBreakBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         // 從 Dg_labClient 獲取 server 和 config 的實例
         webSocketServer server = Dg_labClient.getServer();
@@ -50,7 +50,7 @@ public class ClientPlayerInteractionManagerMixin {
 
     // +++ 攻擊生物反饋 (由此開始) +++
     @Inject(method = "attack", at = @At("HEAD"))
-    private void onAttackEntity(Entity target, CallbackInfo ci) {
+    private void onAttackEntity(Player player, Entity target, CallbackInfo ci) {
         // 從 Dg_labClient 獲取 server 和 config 的實例
         webSocketServer server = Dg_labClient.getServer();
         StrengthConfig strengthConfig = Dg_labClient.getStrengthConfig();

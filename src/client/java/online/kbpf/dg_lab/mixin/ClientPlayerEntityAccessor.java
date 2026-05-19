@@ -6,9 +6,9 @@ import net.minecraft.client.player.LocalPlayer;
 
 @Mixin(LocalPlayer.class)
 public interface ClientPlayerEntityAccessor {
-    @Accessor("healthInitialized")
+    @Accessor("flashOnSetHealth")
     boolean getHealthInitialized();
 
-    @Accessor("healthInitialized")
+    @Accessor("flashOnSetHealth")
     void setHealthInitialized(boolean value);
 }

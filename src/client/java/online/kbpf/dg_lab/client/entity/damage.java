@@ -1,6 +1,6 @@
 package online.kbpf.dg_lab.client.entity;
 
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.world.damagesource.DamageSource;
 
 public class damage {
     private float value;

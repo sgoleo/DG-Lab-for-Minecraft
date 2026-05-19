@@ -28,14 +28,14 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
         super(world, profile);
     }
 
-    @Inject(method = "updateHealth", at = @At("TAIL"))
-    private void afterSetHealth(float health, CallbackInfo ci) {
+    @Inject(method = "hurtTo", at = @At("TAIL"))
+    private void afterSetHealth(float newHealth, CallbackInfo ci) {
 //        LivingEntityAccessor accessor = (LivingEntityAccessor) this;
 //        ClientPlayerEntityAccessor accessor1 = (ClientPlayerEntityAccessor) this;
         webSocketServer server = Dg_labClient.webSocketServer;
         StrengthConfig StrengthConfig = Dg_labClient.strengthConfig;
         if (server != null && server.getConnected()) {
-            float damage = Dg_labHealth - health;
+            float damage = Dg_labHealth - newHealth;
 
 
             if (damage > 0.0F) {
@@ -52,7 +52,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
                         server.sendStrengthToClient(Math.max(1, ((int) (damage * StrengthConfig.getADamageStrength()))), 1, 1);
                 }
             }
-            if (health <= 0) {
+            if (newHealth <= 0) {
                 DGStrength dgStrength = server.getStrength();
                 if (!Dg_labClient.twoPlayerMode) {
                     server.setDelayTime(StrengthConfig.getADeathDelay(), StrengthConfig.getBDeathDelay());
@@ -65,7 +65,7 @@ public abstract class ClientPlayerEntityMixin extends AbstractClientPlayer {
                 }
             }
 
-            Dg_labHealth = health;
+            Dg_labHealth = newHealth;
         }
 
     }

@@ -5,10 +5,10 @@ import online.kbpf.dg_lab.client.Config.StrengthConfig;
 import online.kbpf.dg_lab.client.screen.ConfigScreen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
 
 import static online.kbpf.dg_lab.client.screen.ConfigScreen.*;
@@ -18,31 +18,31 @@ import static online.kbpf.dg_lab.client.screen.ConfigScreen.*;
 public class StrengthConfigScreen extends Screen {
 
 
-    private SliderWidget ADamageStrength, BDamageStrength;
-    private ButtonWidget DamageStrength;
-    private SliderWidget ADelayTime, BDelayTime;
-    private ButtonWidget DelayTime;
-    private SliderWidget ADownTime, BDownTime;
-    private ButtonWidget DownTime;
-    private SliderWidget ADownValue, BDownValue;
-    private ButtonWidget DownValue;
-    private SliderWidget ADeathStrength, BDeathStrength;
-    private ButtonWidget DeathStrength;
-    private SliderWidget ADeathDelay, BDeathDelay;
-    private ButtonWidget DeathDelay;
-    private SliderWidget AMin, BMin;
-    private ButtonWidget Min;
+    private AbstractSliderButton ADamageStrength, BDamageStrength;
+    private Button DamageStrength;
+    private AbstractSliderButton ADelayTime, BDelayTime;
+    private Button DelayTime;
+    private AbstractSliderButton ADownTime, BDownTime;
+    private Button DownTime;
+    private AbstractSliderButton ADownValue, BDownValue;
+    private Button DownValue;
+    private AbstractSliderButton ADeathStrength, BDeathStrength;
+    private Button DeathStrength;
+    private AbstractSliderButton ADeathDelay, BDeathDelay;
+    private Button DeathDelay;
+    private AbstractSliderButton AMin, BMin;
+    private Button Min;
     // --- 這是在步驟四, 第 1 點新增的宣告 ---
-    private SliderWidget ABreakBlockStrength, BBreakBlockStrength;
-    private ButtonWidget BreakBlockStrength;
-    private SliderWidget ABreakBlockDelay, BBreakBlockDelay;
-    private ButtonWidget BreakBlockDelay;
+    private AbstractSliderButton ABreakBlockStrength, BBreakBlockStrength;
+    private Button BreakBlockStrength;
+    private AbstractSliderButton ABreakBlockDelay, BBreakBlockDelay;
+    private Button BreakBlockDelay;
 
     // +++ 攻擊生物反饋 (由此開始) +++
-    private SliderWidget AAttackEntityStrength, BAttackEntityStrength;
-    private ButtonWidget AttackEntityStrength;
-    private SliderWidget AAttackEntityDelay, BAttackEntityDelay;
-    private ButtonWidget AttackEntityDelay;
+    private AbstractSliderButton AAttackEntityStrength, BAttackEntityStrength;
+    private Button AttackEntityStrength;
+    private AbstractSliderButton AAttackEntityDelay, BAttackEntityDelay;
+    private Button AttackEntityDelay;
     // +++ (到此結束) +++
 
     public StrengthConfigScreen() {
@@ -61,7 +61,7 @@ public class StrengthConfigScreen extends Screen {
     protected void init() {
 
         StrengthConfig strengthConfig = Dg_labClient.strengthConfig;
-        ADamageStrength = new SliderWidget(width / 2 - 205, 20, 100, ButtonHeight, Component.literal("A每伤害强度" + String.format("%.2f", strengthConfig.getADamageStrength())), strengthConfig.getADamageStrength() / 20) {
+        ADamageStrength = new AbstractSliderButton(width / 2 - 205, 20, 100, ButtonHeight, Component.literal("A每伤害强度" + String.format("%.2f", strengthConfig.getADamageStrength())), strengthConfig.getADamageStrength() / 20) {
             @Override
             protected void updateMessage() {
             }
@@ -74,7 +74,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BDamageStrength = new SliderWidget(width / 2 - 105, 20, 100, ButtonHeight, Component.literal("B每伤害强度" + String.format("%.2f", strengthConfig.getBDamageStrength())), strengthConfig.getBDamageStrength() / 20) {
+        BDamageStrength = new AbstractSliderButton(width / 2 - 105, 20, 100, ButtonHeight, Component.literal("B每伤害强度" + String.format("%.2f", strengthConfig.getBDamageStrength())), strengthConfig.getBDamageStrength() / 20) {
             @Override
             protected void updateMessage() {
             }
@@ -87,9 +87,9 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        DamageStrength = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 - 215, 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("每受到半颗心伤害增加的强度\n受伤时增加强度若小于1则增加1\n大于一的强度数值9舍0入\n若为0则不增加"))).build();
+        DamageStrength = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 - 215, 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("每受到半颗心伤害增加的强度\n受伤时增加强度若小于1则增加1\n大於一的强度数值9舍0入\n若为0则不增加"))).build();
 
-        ADelayTime = new SliderWidget(width / 2 + 5, 20, 100, ButtonHeight, Component.literal("A强度下降等待" + strengthConfig.getADelayTime() * 50 + "ms"), (double) strengthConfig.getADelayTime() / 120) {
+        ADelayTime = new AbstractSliderButton(width / 2 + 5, 20, 100, ButtonHeight, Component.literal("A强度下降等待" + strengthConfig.getADelayTime() * 50 + "ms"), (double) strengthConfig.getADelayTime() / 120) {
             @Override
             protected void updateMessage() {
             }
@@ -102,7 +102,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BDelayTime = new SliderWidget(width / 2 + 105, 20, 100, ButtonHeight, Component.literal("B强度下降等待" + strengthConfig.getBDelayTime() * 50 + "ms"), (double) strengthConfig.getBDelayTime() / 120) {
+        BDelayTime = new AbstractSliderButton(width / 2 + 105, 20, 100, ButtonHeight, Component.literal("B强度下降等待" + strengthConfig.getBDelayTime() * 50 + "ms"), (double) strengthConfig.getBDelayTime() / 120) {
             @Override
             protected void updateMessage() {
             }
@@ -115,9 +115,9 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        DelayTime = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 + 205, 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("受伤等待一段时间后强度开始下降\n再次受伤将会覆盖当前的等待时间\n非叠加,是覆盖"))).build();
+        DelayTime = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 + 205, 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("受伤等待一段时间后强度开始下降\n再次受伤将会覆盖当前的等待时间\n非叠加,是覆盖"))).build();
 
-        ADownTime = new SliderWidget(width / 2 + 5, ButtonHeight + ButtonDistance + 20, 100, ButtonHeight, Component.literal("A强度下降间隔" + strengthConfig.getADownTime() * 50 + "ms"), (double) strengthConfig.getADownTime() / 120) {
+        ADownTime = new AbstractSliderButton(width / 2 + 5, ButtonHeight + ButtonDistance + 20, 100, ButtonHeight, Component.literal("A强度下降间隔" + strengthConfig.getADownTime() * 50 + "ms"), (double) strengthConfig.getADownTime() / 120) {
             @Override
             protected void updateMessage() {
             }
@@ -131,7 +131,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BDownTime = new SliderWidget(width / 2 + 105, ButtonHeight + ButtonDistance + 20, 100, ButtonHeight, Component.literal("B强度下降间隔" + strengthConfig.getBDownTime() * 50 + "ms"), (double) strengthConfig.getBDownTime() / 120) {
+        BDownTime = new AbstractSliderButton(width / 2 + 105, ButtonHeight + ButtonDistance + 20, 100, ButtonHeight, Component.literal("B强度下降间隔" + strengthConfig.getBDownTime() * 50 + "ms"), (double) strengthConfig.getBDownTime() / 120) {
             @Override
             protected void updateMessage() {
             }
@@ -145,9 +145,9 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        DownTime = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 + 205, ButtonHeight + ButtonDistance + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("强度下降的时候每过此时间强度下降一次"))).build();
+        DownTime = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 + 205, ButtonHeight + ButtonDistance + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("强度下降的时候每过此时间强度下降一次"))).build();
 
-        ADownValue = new SliderWidget(width / 2 - 205, ButtonHeight + ButtonDistance + 20, 100, ButtonHeight, Component.literal("A强度下降数值" + strengthConfig.getADownValue()), (double) strengthConfig.getADownValue() / 20) {
+        ADownValue = new AbstractSliderButton(width / 2 - 205, ButtonHeight + ButtonDistance + 20, 100, ButtonHeight, Component.literal("A强度下降数值" + strengthConfig.getADownValue()), (double) strengthConfig.getADownValue() / 20) {
             @Override
             protected void updateMessage() {
             }
@@ -160,7 +160,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BDownValue = new SliderWidget(width / 2 - 105, ButtonHeight + ButtonDistance + 20, 100, ButtonHeight, Component.literal("A强度下降数值" + strengthConfig.getBDownValue()), (double) strengthConfig.getBDownValue() / 20) {
+        BDownValue = new AbstractSliderButton(width / 2 - 105, ButtonHeight + ButtonDistance + 20, 100, ButtonHeight, Component.literal("B强度下降数值" + strengthConfig.getBDownValue()), (double) strengthConfig.getBDownValue() / 20) {
             @Override
             protected void updateMessage() {
             }
@@ -173,9 +173,9 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        DownValue = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 - 215, ButtonHeight + ButtonDistance + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("每次强度下降的时候下降的数值"))).build();
+        DownValue = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 - 215, ButtonHeight + ButtonDistance + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("每次强度下降的时候下降的数值"))).build();
 
-        ADeathStrength = new SliderWidget(width / 2 - 205, 2 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A死亡增加强度" + strengthConfig.getADeathStrength()), (double) strengthConfig.getADeathStrength() / 200) {
+        ADeathStrength = new AbstractSliderButton(width / 2 - 205, 2 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A死亡增加强度" + strengthConfig.getADeathStrength()), (double) strengthConfig.getADeathStrength() / 200) {
             @Override
             protected void updateMessage() {
             }
@@ -188,7 +188,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BDeathStrength = new SliderWidget(width / 2 - 105, 2 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B死亡增加强度" + strengthConfig.getBDeathStrength()), (double) strengthConfig.getBDeathStrength() / 200) {
+        BDeathStrength = new AbstractSliderButton(width / 2 - 105, 2 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B死亡增加强度" + strengthConfig.getBDeathStrength()), (double) strengthConfig.getBDeathStrength() / 200) {
             @Override
             protected void updateMessage() {
             }
@@ -201,9 +201,9 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        DeathStrength = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 - 215, 2 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("死亡时增加的强度\n计算完受伤强度后叠加\n和受伤强度同时作用\n死亡时将会发送\n死亡时收到的伤害x每伤害强度+死亡增加强度"))).build();
+        DeathStrength = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 - 215, 2 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("死亡时增加的强度\n计算完受伤强度后叠加\n和受伤强度同时作用\n死亡时将会发送\n死亡时收到的伤害x每伤害强度+死亡增加强度"))).build();
 
-        ADeathDelay = new SliderWidget(width / 2 + 5, 2 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A死亡时强度下降等待" + strengthConfig.getADeathDelay() * 50 + "ms"), (double) strengthConfig.getADeathDelay() / 120) {
+        ADeathDelay = new AbstractSliderButton(width / 2 + 5, 2 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A死亡时强度下降等待" + strengthConfig.getADeathDelay() * 50 + "ms"), (double) strengthConfig.getADeathDelay() / 120) {
             @Override
             protected void updateMessage() {
             }
@@ -216,7 +216,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BDeathDelay = new SliderWidget(width / 2 + 105, 2 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B死亡时强度下降等待" + strengthConfig.getBDeathDelay() * 50 + "ms"), (double) strengthConfig.getBDeathDelay() / 120) {
+        BDeathDelay = new AbstractSliderButton(width / 2 + 105, 2 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B死亡时强度下降等待" + strengthConfig.getBDeathDelay() * 50 + "ms"), (double) strengthConfig.getBDeathDelay() / 120) {
             @Override
             protected void updateMessage() {
             }
@@ -229,9 +229,9 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        DeathDelay = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 + 205, 2 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("同强度下降等待\n此值在死亡时生效\n非叠加,是覆盖"))).build();
+        DeathDelay = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 + 205, 2 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("同强度下降等待\n此值在死亡时生效\n非叠加,是覆盖"))).build();
 
-        AMin = new SliderWidget(width / 2 - 205, 3 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A最低强度" + strengthConfig.getAMin()), (double) strengthConfig.getAMin() / 200) {
+        AMin = new AbstractSliderButton(width / 2 - 205, 3 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A最低强度" + strengthConfig.getAMin()), (double) strengthConfig.getAMin() / 200) {
             @Override
             protected void updateMessage() {
 
@@ -245,7 +245,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BMin = new SliderWidget(width / 2 - 105, 3 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B最低强度" + strengthConfig.getBMin()), (double) strengthConfig.getBMin() / 200) {
+        BMin = new AbstractSliderButton(width / 2 - 105, 3 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B最低强度" + strengthConfig.getBMin()), (double) strengthConfig.getBMin() / 200) {
             @Override
             protected void updateMessage() {
 
@@ -259,10 +259,10 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        Min = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 - 215, 3 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("通道最低强度\n强度下降时将不会低于此值\n此值实际受血量比例影响\n例如损失10%血量最低强度就为此值x10%\n损失50%血量最低強度就为此值x50%"))).build();
+        Min = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 - 215, 3 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("通道最低强度\n强度下降时将不会低于此值\n此值实际受血量比例影响\n例如损失10%血量最低强度就为此值x10%\n损失50%血量最低強度就为此值x50%"))).build();
 
         // --- 新增的程式碼（從這裡開始） ---
-        ABreakBlockStrength = new SliderWidget(width / 2 - 205, 4 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A破壞方塊強度" + String.format("%.2f", strengthConfig.getABreakBlockStrength())), strengthConfig.getABreakBlockStrength() / 20) {
+        ABreakBlockStrength = new AbstractSliderButton(width / 2 - 205, 4 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A破壞方塊強度" + String.format("%.2f", strengthConfig.getABreakBlockStrength())), strengthConfig.getABreakBlockStrength() / 20) {
             @Override
             protected void updateMessage() {}
 
@@ -274,7 +274,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BBreakBlockStrength = new SliderWidget(width / 2 - 105, 4 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B破壞方塊強度" + String.format("%.2f", strengthConfig.getBBreakBlockStrength())), strengthConfig.getBBreakBlockStrength() / 20) {
+        BBreakBlockStrength = new AbstractSliderButton(width / 2 - 105, 4 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B破壞方塊強度" + String.format("%.2f", strengthConfig.getBBreakBlockStrength())), strengthConfig.getBBreakBlockStrength() / 20) {
             @Override
             protected void updateMessage() {}
 
@@ -286,9 +286,9 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BreakBlockStrength = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 - 215, 4 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("破壞方塊時增加的強度"))).build();
+        BreakBlockStrength = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 - 215, 4 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("破壞方塊時增加的強度"))).build();
 
-        ABreakBlockDelay = new SliderWidget(width / 2 + 5, 4 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A破壞延遲" + strengthConfig.getABreakBlockDelay() * 50 + "ms"), (double) strengthConfig.getABreakBlockDelay() / 120) {
+        ABreakBlockDelay = new AbstractSliderButton(width / 2 + 5, 4 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A破壞延遲" + strengthConfig.getABreakBlockDelay() * 50 + "ms"), (double) strengthConfig.getABreakBlockDelay() / 120) {
             @Override
             protected void updateMessage() {}
 
@@ -300,7 +300,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BBreakBlockDelay = new SliderWidget(width / 2 + 105, 4 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B破壞延遲" + strengthConfig.getBBreakBlockDelay() * 50 + "ms"), (double) strengthConfig.getBBreakBlockDelay() / 120) {
+        BBreakBlockDelay = new AbstractSliderButton(width / 2 + 105, 4 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B破壞延遲" + strengthConfig.getBBreakBlockDelay() * 50 + "ms"), (double) strengthConfig.getBBreakBlockDelay() / 120) {
             @Override
             protected void updateMessage() {}
 
@@ -312,11 +312,11 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BreakBlockDelay = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 + 205, 4 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("破壞方塊時觸發的強度延遲"))).build();
+        BreakBlockDelay = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 + 205, 4 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("破壞方塊時觸發的強度延遲"))).build();
         // --- 新增的程式碼（到這裡結束） ---
 
         // +++ 攻擊生物反饋 (由此開始) +++
-        AAttackEntityStrength = new SliderWidget(width / 2 - 205, 5 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A攻擊生物強度" + String.format("%.2f", strengthConfig.getAAttackEntityStrength())), strengthConfig.getAAttackEntityStrength() / 20) {
+        AAttackEntityStrength = new AbstractSliderButton(width / 2 - 205, 5 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A攻擊生物強度" + String.format("%.2f", strengthConfig.getAAttackEntityStrength())), strengthConfig.getAAttackEntityStrength() / 20) {
             @Override
             protected void updateMessage() {}
 
@@ -328,7 +328,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BAttackEntityStrength = new SliderWidget(width / 2 - 105, 5 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B攻擊生物強度" + String.format("%.2f", strengthConfig.getBAttackEntityStrength())), strengthConfig.getBAttackEntityStrength() / 20) {
+        BAttackEntityStrength = new AbstractSliderButton(width / 2 - 105, 5 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B攻擊生物強度" + String.format("%.2f", strengthConfig.getBAttackEntityStrength())), strengthConfig.getBAttackEntityStrength() / 20) {
             @Override
             protected void updateMessage() {}
 
@@ -340,9 +340,9 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        AttackEntityStrength = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 - 215, 5 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("攻擊生物時增加的強度"))).build();
+        AttackEntityStrength = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 - 215, 5 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("攻擊生物時增加的強度"))).build();
 
-        AAttackEntityDelay = new SliderWidget(width / 2 + 5, 5 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A攻擊延遲" + strengthConfig.getAAttackEntityDelay() * 50 + "ms"), (double) strengthConfig.getAAttackEntityDelay() / 120) {
+        AAttackEntityDelay = new AbstractSliderButton(width / 2 + 5, 5 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("A攻擊延遲" + strengthConfig.getAAttackEntityDelay() * 50 + "ms"), (double) strengthConfig.getAAttackEntityDelay() / 120) {
             @Override
             protected void updateMessage() {}
 
@@ -354,7 +354,7 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        BAttackEntityDelay = new SliderWidget(width / 2 + 105, 5 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B攻擊延遲" + strengthConfig.getBAttackEntityDelay() * 50 + "ms"), (double) strengthConfig.getBAttackEntityDelay() / 120) {
+        BAttackEntityDelay = new AbstractSliderButton(width / 2 + 105, 5 * (ButtonHeight + ButtonDistance) + 20, 100, ButtonHeight, Component.literal("B攻擊延遲" + strengthConfig.getBAttackEntityDelay() * 50 + "ms"), (double) strengthConfig.getBAttackEntityDelay() / 120) {
             @Override
             protected void updateMessage() {}
 
@@ -366,48 +366,48 @@ public class StrengthConfigScreen extends Screen {
             }
         };
 
-        AttackEntityDelay = ButtonWidget.builder(Component.literal("?"), button -> {}).dimensions(width / 2 + 205, 5 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("攻擊生物時觸發的強度延遲"))).build();
+        AttackEntityDelay = Button.builder(Component.literal("?"), button -> {}).bounds(width / 2 + 205, 5 * (ButtonHeight + ButtonDistance) + 20, 10, ButtonHeight).tooltip(Tooltip.of(Component.literal("攻擊生物時觸發的強度延遲"))).build();
         // +++ (到此結束) +++
 
 
-        addDrawableChild(ADamageStrength);
-        addDrawableChild(BDamageStrength);
-        addDrawable(DamageStrength);
-        addDrawableChild(ADelayTime);
-        addDrawableChild(BDelayTime);
-        addDrawable(DelayTime);
-        addDrawableChild(ADownTime);
-        addDrawableChild(BDownTime);
-        addDrawable(DownTime);
-        addDrawableChild(ADownValue);
-        addDrawableChild(BDownValue);
-        addDrawable(DownValue);
-        addDrawableChild(ADeathStrength);
-        addDrawableChild(BDeathStrength);
-        addDrawable(DeathStrength);
-        addDrawableChild(ADeathDelay);
-        addDrawableChild(BDeathDelay);
-        addDrawable(DeathDelay);
-        addDrawableChild(AMin);
-        addDrawableChild(BMin);
-        addDrawable(Min);
+        addRenderableWidget(ADamageStrength);
+        addRenderableWidget(BDamageStrength);
+        addRenderableOnly(DamageStrength);
+        addRenderableWidget(ADelayTime);
+        addRenderableWidget(BDelayTime);
+        addRenderableOnly(DelayTime);
+        addRenderableWidget(ADownTime);
+        addRenderableWidget(BDownTime);
+        addRenderableOnly(DownTime);
+        addRenderableWidget(ADownValue);
+        addRenderableWidget(BDownValue);
+        addRenderableOnly(DownValue);
+        addRenderableWidget(ADeathStrength);
+        addRenderableWidget(BDeathStrength);
+        addRenderableOnly(DeathStrength);
+        addRenderableWidget(ADeathDelay);
+        addRenderableWidget(BDeathDelay);
+        addRenderableOnly(DeathDelay);
+        addRenderableWidget(AMin);
+        addRenderableWidget(BMin);
+        addRenderableOnly(Min);
 
         // --- 新增的 addDrawable (從這裡開始) ---
-        addDrawableChild(ABreakBlockStrength);
-        addDrawableChild(BBreakBlockStrength);
-        addDrawable(BreakBlockStrength);
-        addDrawableChild(ABreakBlockDelay);
-        addDrawableChild(BBreakBlockDelay);
-        addDrawable(BreakBlockDelay);
+        addRenderableWidget(ABreakBlockStrength);
+        addRenderableWidget(BBreakBlockStrength);
+        addRenderableOnly(BreakBlockStrength);
+        addRenderableWidget(ABreakBlockDelay);
+        addRenderableWidget(BBreakBlockDelay);
+        addRenderableOnly(BreakBlockDelay);
         // --- 新增的 addDrawable (到這裡結束) ---
 
         // +++ 攻擊生物反饋 (由此開始) +++
-        addDrawableChild(AAttackEntityStrength);
-        addDrawableChild(BAttackEntityStrength);
-        addDrawable(AttackEntityStrength);
-        addDrawableChild(AAttackEntityDelay);
-        addDrawableChild(BAttackEntityDelay);
-        addDrawable(AttackEntityDelay);
+        addRenderableWidget(AAttackEntityStrength);
+        addRenderableWidget(BAttackEntityStrength);
+        addRenderableOnly(AttackEntityStrength);
+        addRenderableWidget(AAttackEntityDelay);
+        addRenderableWidget(BAttackEntityDelay);
+        addRenderableOnly(AttackEntityDelay);
         // +++ (到此結束) +++
     }
 
