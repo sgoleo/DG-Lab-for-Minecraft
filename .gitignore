@@ -2,4 +2,4 @@ run/
 build/
 .idea/
 out/
-.gradle/
+.gradle/build.log
