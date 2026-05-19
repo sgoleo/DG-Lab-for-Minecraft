@@ -13,7 +13,7 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -29,8 +29,8 @@ public class Default {
     public static void register(ModConfig modConfig, StrengthConfig StrengthConfig, webSocketServer webSocketServer){
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(literal("dglab")
                         .executes(context -> {
-                                    context.getSource().sendFeedback(Text.literal("此mod还在测试版"));
-                                    context.getSource().sendFeedback(Text.literal("默认使用按键O打开配置页面"));
+                                    context.getSource().sendFeedback(Component.literal("此mod还在测试版"));
+                                    context.getSource().sendFeedback(Component.literal("默认使用按键O打开配置页面"));
                                     return 1;
                                 }
                         )
@@ -41,7 +41,7 @@ public class Default {
                                 }))
                         .then(literal("Strength").then(literal("get")
                                         .executes(context -> {
-                                            context.getSource().sendFeedback(Text.literal(new Gson().toJson(webSocketServer.getStrength(), DGStrength.class)));
+                                            context.getSource().sendFeedback(Component.literal(new Gson().toJson(webSocketServer.getStrength(), DGStrength.class)));
                                             return 1;
                                         }))
                                 .then(literal("set").then(argument("AStrength", IntegerArgumentType.integer()).then(argument("BStrength", IntegerArgumentType.integer()).executes(context -> {
@@ -57,8 +57,8 @@ public class Default {
                                     try {
                                         InetAddress localhost = InetAddress.getLocalHost();
                                         String ipAddress = localhost.getHostAddress();
-                                        context.getSource().sendFeedback(Text.literal("本地ip:" + ipAddress));
-                                        context.getSource().sendFeedback(Text.literal("请确保连接的手机和此客户端在同一局域网下"));
+                                        context.getSource().sendFeedback(Component.literal("本地ip:" + ipAddress));
+                                        context.getSource().sendFeedback(Component.literal("请确保连接的手机和此客户端在同一局域网下"));
                                     } catch (UnknownHostException e) {
                                         throw new RuntimeException(e);
                                     }
@@ -68,8 +68,8 @@ public class Default {
                                 }))
                                 .then(literal("AutoStart")
                                         .executes(context -> {
-                                            if (modConfig.getAutoStartWebSocketServer()) context.getSource().sendFeedback(Text.literal("自动启动已开启"));
-                                            else context.getSource().sendFeedback(Text.literal("自动启动未开启"));
+                                            if (modConfig.getAutoStartWebSocketServer()) context.getSource().sendFeedback(Component.literal("自动启动已开启"));
+                                            else context.getSource().sendFeedback(Component.literal("自动启动未开启"));
                                             return 1;
                                         })
                                         .then(argument("boolean", BoolArgumentType.bool())
@@ -84,11 +84,11 @@ public class Default {
                         )
                         .then(literal("config")
                                 .executes(context -> {
-                                    context.getSource().sendFeedback(Text.literal("受伤时每半心增加的强度值A:" + StrengthConfig.getADamageStrength() + "B:" + StrengthConfig.getBDamageStrength()));
-                                    context.getSource().sendFeedback(Text.literal("没受伤多长时间开始下降强度A:" + StrengthConfig.getADelayTime() + "B:" + StrengthConfig.getBDelayTime()));
-                                    context.getSource().sendFeedback(Text.literal("下降强度时每次的间隔时间A:" + StrengthConfig.getADownTime() + "B:" + StrengthConfig.getBDownTime()));
-                                    context.getSource().sendFeedback(Text.literal("下降强度时每次的降低强度数值A:" + StrengthConfig.getADownValue() + "B:" + StrengthConfig.getBDownValue()));
-                                    context.getSource().sendFeedback(Text.literal("时间的单位为40ms,即1=40ms"));
+                                    context.getSource().sendFeedback(Component.literal("受伤时每半心增加的强度值A:" + StrengthConfig.getADamageStrength() + "B:" + StrengthConfig.getBDamageStrength()));
+                                    context.getSource().sendFeedback(Component.literal("没受伤多长时间开始下降强度A:" + StrengthConfig.getADelayTime() + "B:" + StrengthConfig.getBDelayTime()));
+                                    context.getSource().sendFeedback(Component.literal("下降强度时每次的间隔时间A:" + StrengthConfig.getADownTime() + "B:" + StrengthConfig.getBDownTime()));
+                                    context.getSource().sendFeedback(Component.literal("下降强度时每次的降低强度数值A:" + StrengthConfig.getADownValue() + "B:" + StrengthConfig.getBDownValue()));
+                                    context.getSource().sendFeedback(Component.literal("时间的单位为40ms,即1=40ms"));
                                     return 1;
                                 })
                                 .then(literal("set")
@@ -136,7 +136,7 @@ public class Default {
                         )
                         .then(literal("test")
                                 .then(argument(("text"), StringArgumentType.string()).executes(context -> {
-                                    context.getSource().sendFeedback(Text.literal(FrequencyTool.toFrequency(StringArgumentType.getString(context, "test"))));
+                                    context.getSource().sendFeedback(Component.literal(FrequencyTool.toFrequency(StringArgumentType.getString(context, "test"))));
                                     return 1;
                                 }))
                                 .then(literal("send").then(argument(("text"), StringArgumentType.string()).executes(context -> {

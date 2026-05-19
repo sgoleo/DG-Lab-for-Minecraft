@@ -6,10 +6,10 @@ import net.minecraft.entity.LivingEntity;
 
 @Mixin(LivingEntity.class)
 public interface LivingEntityAccessor {
-    @Accessor("lastDamageTaken")
+    @Accessor("lastHurt")
     float getLastDamageTaken();
 
-    @Accessor("lastDamageTaken")
+    @Accessor("lastHurt")
     void setLastDamageTaken(float value);
 
 

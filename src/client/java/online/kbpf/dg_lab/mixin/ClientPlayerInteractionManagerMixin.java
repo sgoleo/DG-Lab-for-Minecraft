@@ -1,7 +1,7 @@
 package online.kbpf.dg_lab.mixin;
 
-import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.multiplayer.MultiPlayerGameMode;
+import net.minecraft.core.BlockPos;
 import online.kbpf.dg_lab.client.Config.StrengthConfig;
 import online.kbpf.dg_lab.client.Dg_labClient;
 import online.kbpf.dg_lab.client.webSocketServer.webSocketServer;
@@ -11,12 +11,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 // +++ (由此開始) +++
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 // +++ (到此結束) +++
 
-@Mixin(ClientPlayerInteractionManager.class)
+@Mixin(MultiPlayerGameMode.class)
 public class ClientPlayerInteractionManagerMixin {
 
     @Inject(method = "breakBlock", at = @At("HEAD"))
@@ -49,8 +49,8 @@ public class ClientPlayerInteractionManagerMixin {
     }
 
     // +++ 攻擊生物反饋 (由此開始) +++
-    @Inject(method = "attackEntity", at = @At("HEAD"))
-    private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
+    @Inject(method = "attack", at = @At("HEAD"))
+    private void onAttackEntity(Entity target, CallbackInfo ci) {
         // 從 Dg_labClient 獲取 server 和 config 的實例
         webSocketServer server = Dg_labClient.getServer();
         StrengthConfig strengthConfig = Dg_labClient.getStrengthConfig();

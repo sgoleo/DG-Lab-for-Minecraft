@@ -1,7 +1,7 @@
 package online.kbpf.dg_lab.client;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import online.kbpf.dg_lab.Dg_lab;
 import online.kbpf.dg_lab.client.Tool.DGWaveformTool;
 import online.kbpf.dg_lab.client.command.Default;
@@ -16,8 +16,8 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.KeyMapping;
+import com.mojang.blaze3d.platform.InputConstants;
 import org.lwjgl.glfw.GLFW;
 
 import java.net.InetSocketAddress;
@@ -35,10 +35,10 @@ public class Dg_labClient implements ClientModInitializer {
     public static String secondPlayer = "null";
     public static int secondPlayerQuitStrength = 200;
 
-    private static KeyBinding keyBinding;
+    private static KeyMapping keyBinding;
     private final Screen configScreen = new ConfigScreen();
 
-    private static final Identifier HUD_ID = Identifier.of("dglab", "hud");
+    private static final ResourceLocation HUD_ID = ResourceLocation.fromNamespaceAndPath("dglab", "hud");
 
 
     @Override
@@ -56,11 +56,11 @@ public class Dg_labClient implements ClientModInitializer {
         hud tntHud = new hud();
         HudElementRegistry.addLast(HUD_ID, tntHud);
 
-        keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        keyBinding = KeyBindingHelper.registerKeyBinding(new KeyMapping(
                 "打开配置界面",
-                InputUtil.Type.KEYSYM,
+                InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_O,
-                KeyBinding.Category.create(Identifier.of(Dg_lab.MODID))
+                KeyMapping.Category.createOrGet(Dg_lab.MODID)
 
         ));
 

@@ -1,8 +1,8 @@
 //package online.kbpf.dg_lab.client.screen.StrengthScreen;
 //
-//import net.minecraft.client.MinecraftClient;
-//import net.minecraft.client.font.TextRenderer;
-//import net.minecraft.client.gui.DrawContext;
+//import net.minecraft.client.Minecraft;
+//import net.minecraft.client.gui.Font;
+//import net.minecraft.client.gui.GuiGraphics;
 //import net.minecraft.client.gui.Element;
 //import net.minecraft.client.gui.Selectable;
 //import net.minecraft.client.gui.tooltip.Tooltip;
@@ -10,7 +10,7 @@
 //import net.minecraft.client.gui.widget.ElementListWidget;
 //import net.minecraft.client.gui.widget.SliderWidget;
 //import net.minecraft.client.gui.widget.TextFieldWidget;
-//import net.minecraft.text.Text;
+//import net.minecraft.network.chat.Component;
 //
 //
 //
@@ -18,7 +18,7 @@
 //
 //public class StrengthListWidget extends ElementListWidget<StrengthListWidget.Entry> {
 //
-//    public StrengthListWidget(MinecraftClient minecraftClient, int width, int height, int y, int itemHeight) {
+//    public StrengthListWidget(Minecraft minecraftClient, int width, int height, int y, int itemHeight) {
 //        super(minecraftClient, width, height, y, itemHeight);
 //    }
 //
@@ -29,13 +29,13 @@
 //    public static class Entry extends ElementListWidget.Entry<Entry> {
 //        private final TextFieldWidget waveformDataText;
 //        private final ButtonWidget sendButton;
-//        private final TextRenderer textRenderer;
+//        private final Font textRenderer;
 //        private final SliderWidget value;
 //        private final Text text;
 //
-//        public Entry(TextRenderer textRenderer, Text text, Runnable runnable) {
-//            waveformDataText = new TextFieldWidget(textRenderer, 100, 15, Text.literal("输入波形代码"));
-//            waveformDataText.setPlaceholder(Text.literal("输入波形代码").withColor(0xaaaaaa));
+//        public Entry(Font textRenderer, Text text, Runnable runnable) {
+//            waveformDataText = new TextFieldWidget(textRenderer, 100, 15, Component.literal("输入波形代码"));
+//            waveformDataText.setPlaceholder(Component.literal("输入波形代码").withColor(0xaaaaaa));
 //            value = new SliderWidget() {
 //                @Override
 //                protected void updateMessage() {
@@ -46,9 +46,9 @@
 //
 //                }
 //            };
-//            sendButton = new ButtonWidget.Builder(Text.literal("❏"), button -> {
-//                MinecraftClient.getInstance().keyboard.setClipboard(waveformDataText.getText());
-//            }).tooltip(Tooltip.of(Text.literal("点击复制波形代码"))).build();
+//            sendButton = new ButtonWidget.Builder(Component.literal("❏"), button -> {
+//                Minecraft.getInstance().keyboard.setClipboard(waveformDataText.getText());
+//            }).tooltip(Tooltip.of(Component.literal("点击复制波形代码"))).build();
 //            this.textRenderer = textRenderer;
 //            this.text = text;
 //
@@ -66,7 +66,7 @@
 //
 //
 //        @Override
-//        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+//        public void render(GuiGraphics context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
 //            waveformDataText.setX((int) (x + (entryWidth / 2.5)));
 //            waveformDataText.setY(y);
 //            waveformDataText.setWidth(entryWidth / 2);
@@ -80,7 +80,7 @@
 //            sendButton.render(context, mouseX, mouseY, tickDelta);
 //
 //
-//            context.drawTextWithShadow(textRenderer, this.text, x, y + 5, 0xffffff);
+//            context.drawString( this.text, x, y + 5, 0xffffff);
 //
 ////            System.out.println(x + " " + y + " " + entryWidth + " " + entryHeight + "a");
 //        }

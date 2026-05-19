@@ -13,7 +13,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import javax.imageio.ImageIO;
 
@@ -28,7 +28,7 @@ public class ToolQR {
         if(ipAddress.equals("error")) {
             MinecraftClient client = MinecraftClient.getInstance();
             if (client.player != null) {
-                client.player.sendMessage(Text.literal("没有指定的ip地址").withColor(0xFF5555), false);
+                client.player.sendMessage(Component.literal("没有指定的ip地址").withColor(0xFF5555), false);
             }
         }
         else {

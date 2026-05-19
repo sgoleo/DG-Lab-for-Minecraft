@@ -3,9 +3,9 @@ package online.kbpf.dg_lab.client.screen.WaveformScreen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import online.kbpf.dg_lab.client.screen.ConfigScreen;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 
 import static online.kbpf.dg_lab.client.screen.ConfigScreen.*;
 
@@ -17,7 +17,7 @@ public class WaveformConfigScreen extends Screen {
 
     public WaveformConfigScreen() {
 
-        super(Text.literal("波形配置界面"));
+        super(Component.literal("波形配置界面"));
     }
 
     @Override
@@ -32,13 +32,13 @@ public class WaveformConfigScreen extends Screen {
     @Override
     protected void init() {
         //注册列表项目
-        MinecraftClient client = MinecraftClient.getInstance();
+        Minecraft client = Minecraft.getInstance();
         waveformListWidget = new WaveformListWidget(client, width, height - 40, 40, ButtonHeight + ButtonDistance);
         //用这个滚动列表注意左右边界 添加条目比较少的时候不显示左右边界 但是左右边界的地方无法交互
-        WaveformListWidget.Entry a = new WaveformListWidget.Entry(waveformListWidget, client.textRenderer, Text.literal("A通道受伤波形"), "ADamage");
-        WaveformListWidget.Entry b = new WaveformListWidget.Entry(waveformListWidget, client.textRenderer, Text.literal("A通道恢复波形"), "AHealing");
-        WaveformListWidget.Entry c = new WaveformListWidget.Entry(waveformListWidget, client.textRenderer, Text.literal("B通道受伤波形"), "BDamage");
-        WaveformListWidget.Entry d = new WaveformListWidget.Entry(waveformListWidget, client.textRenderer, Text.literal("B通道恢复波形"), "BHealing");
+        WaveformListWidget.Entry a = new WaveformListWidget.Entry(waveformListWidget, client.textRenderer, Component.literal("A通道受伤波形"), "ADamage");
+        WaveformListWidget.Entry b = new WaveformListWidget.Entry(waveformListWidget, client.textRenderer, Component.literal("A通道恢复波形"), "AHealing");
+        WaveformListWidget.Entry c = new WaveformListWidget.Entry(waveformListWidget, client.textRenderer, Component.literal("B通道受伤波形"), "BDamage");
+        WaveformListWidget.Entry d = new WaveformListWidget.Entry(waveformListWidget, client.textRenderer, Component.literal("B通道恢复波形"), "BHealing");
 
 
         //添加列表项目
@@ -52,7 +52,7 @@ public class WaveformConfigScreen extends Screen {
 }
 
 //    @Override
-//    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+//    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
 //        //渲染
 //        super.render(context, mouseX, mouseY, delta);
 //    }

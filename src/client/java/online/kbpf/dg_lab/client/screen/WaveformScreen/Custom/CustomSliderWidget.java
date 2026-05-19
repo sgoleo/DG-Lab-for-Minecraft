@@ -1,11 +1,11 @@
 package online.kbpf.dg_lab.client.screen.WaveformScreen.Custom;
 
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.widget.SliderWidget;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 
@@ -24,13 +24,13 @@ public abstract class CustomSliderWidget extends SliderWidget {
     }
 
     public void setValue(int value) {
-        this.setMessage(Text.literal(String.valueOf(value)));
+        this.setMessage(Component.literal(String.valueOf(value)));
         this.value = (double) value / 100;
     }
 
     @Override
-    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        MinecraftClient minecraftClient = MinecraftClient.getInstance();
+    public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
+        Minecraft minecraftClient = Minecraft.getInstance();
 
         context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight(), ColorHelper.getWhite(this.alpha));
         context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, this.getHandleTexture(), this.getX() + (int)(this.value * (double)(this.width - 8)), this.getY(), 8, this.getHeight(), ColorHelper.getWhite(this.alpha));

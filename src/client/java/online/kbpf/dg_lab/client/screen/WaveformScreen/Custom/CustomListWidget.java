@@ -1,14 +1,14 @@
 package online.kbpf.dg_lab.client.screen.WaveformScreen.Custom;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.SliderWidget;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import online.kbpf.dg_lab.client.entity.Waveform.ControlBar;
 
 import static online.kbpf.dg_lab.client.screen.WaveformScreen.Custom.CustomScreen.list;
@@ -22,7 +22,7 @@ public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> 
 
 
 
-    public CustomListWidget(MinecraftClient minecraftClient, int width, int height, int y, int itemHeight) {
+    public CustomListWidget(Minecraft minecraftClient, int width, int height, int y, int itemHeight) {
         super(minecraftClient, width, height, y, itemHeight);
         this.width = width;
     }
@@ -66,7 +66,7 @@ public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> 
 
     public static class Entry extends ElementListWidget.Entry<Entry> {
 
-        final Text manual = Text.literal("手动").styled(style -> style.withBold(true).withUnderline(true)), automatic = Text.literal("平均").styled(style -> style.withColor(TextColor.fromRgb(0xAAAAAA)).withBold(true));
+        final Text manual = Component.literal("手动").styled(style -> style.withBold(true).withUnderline(true)), automatic = Component.literal("平均").styled(style -> style.withColor(TextColor.fromRgb(0xAAAAAA)).withBold(true));
 
         private final CustomListWidget parent; // 添加对父列表的引用
 
@@ -82,23 +82,23 @@ public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> 
             this.controlBar = list.get(this.index);
 
 
-            S_enable = ButtonWidget.builder(Text.of((list.get(this.index).isS_on_off())? manual : automatic), button -> {
+            S_enable = ButtonWidget.builder(Component.literal((list.get(this.index).isS_on_off())? manual : automatic), button -> {
                 this.controlBar.setS_on_off(!this.controlBar.isS_on_off());
-                S_enable.setMessage(Text.of((this.controlBar.isS_on_off()) ? manual : automatic));
+                S_enable.setMessage(Component.literal((this.controlBar.isS_on_off()) ? manual : automatic));
                 list.set(this.index, this.controlBar);
                 if(!controlBar.isS_on_off())
                     updateStrength(getBackStrengthOff(Entry.this.index), getNextStrengthOff(Entry.this.index));
             }).build();
 
-            F_enable = ButtonWidget.builder(Text.of((list.get(this.index).isF_on_off())? manual : automatic), button -> {
+            F_enable = ButtonWidget.builder(Component.literal((list.get(this.index).isF_on_off())? manual : automatic), button -> {
                 this.controlBar.setF_on_off(!this.controlBar.isF_on_off());
-                F_enable.setMessage(Text.of((this.controlBar.isF_on_off()) ? manual : automatic));
+                F_enable.setMessage(Component.literal((this.controlBar.isF_on_off()) ? manual : automatic));
                 list.set(this.index, this.controlBar);
                 if(!controlBar.isF_on_off())
                     updateFrequency(getBackFrequencyOff(Entry.this.index), getNextFrequencyOff(Entry.this.index));
             }).build();
 
-            strength = new CustomSliderWidget(0, 0, 100 ,15, Text.literal(String.valueOf(list.get(this.index).getStrength())), list.get(this.index).getStrength() * 0.01) {
+            strength = new CustomSliderWidget(0, 0, 100 ,15, Component.literal(String.valueOf(list.get(this.index).getStrength())), list.get(this.index).getStrength() * 0.01) {
 
                 @Override
                 protected void updateMessage() {
@@ -112,7 +112,7 @@ public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> 
                 protected void applyValue() {}
             };
 
-            frequency = new CustomSliderWidget(0, 0, 100, 15, Text.literal(String.valueOf(list.get(this.index).getFrequency())), list.get(this.index).getFrequency() * 0.01) {
+            frequency = new CustomSliderWidget(0, 0, 100, 15, Component.literal(String.valueOf(list.get(this.index).getFrequency())), list.get(this.index).getFrequency() * 0.01) {
 
                 @Override
                 protected void updateMessage() {
@@ -237,7 +237,7 @@ public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> 
         }
 
         @Override
-        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void render(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
             // 保存索引、位置和大小等信息
             int entryWidth = ((CustomListWidget)this.parent).getRowWidth();
             int y = this.getY();

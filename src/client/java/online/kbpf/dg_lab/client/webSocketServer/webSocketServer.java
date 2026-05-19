@@ -5,7 +5,7 @@ import online.kbpf.dg_lab.client.entity.DGStrength;
 import online.kbpf.dg_lab.client.entity.clientInfo;
 import com.google.gson.Gson;
 import net.minecraft.text.Style;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -54,10 +54,10 @@ public class webSocketServer extends WebSocketServer {
             client = conn;
             // 在连接时发送客户端信息
             client.send(new Gson().toJson(clientInfo, clientInfo.class));
-            MinecraftClient.getInstance().player.sendMessage(Text.literal("==="),true);
-            MinecraftClient.getInstance().player.sendMessage(Text.literal("作者不对使用此模组造成的人身伤害和精神伤害负责"),true);
-            MinecraftClient.getInstance().player.sendMessage(Text.literal("使用此模组请自行注意人身安全"),true);
-            MinecraftClient.getInstance().player.sendMessage(Text.literal("==="),true);
+            MinecraftClient.getInstance().player.sendMessage(Component.literal("==="),true);
+            MinecraftClient.getInstance().player.sendMessage(Component.literal("作者不对使用此模组造成的人身伤害和精神伤害负责"),true);
+            MinecraftClient.getInstance().player.sendMessage(Component.literal("使用此模组请自行注意人身安全"),true);
+            MinecraftClient.getInstance().player.sendMessage(Component.literal("==="),true);
 
             // 创建一个定时器以定期发送心跳和更新强度信息
             Timer timer = new Timer();
@@ -129,7 +129,7 @@ public class webSocketServer extends WebSocketServer {
             if (Number == 405) {
                 if (MinecraftClient.getInstance().player != null)
 
-                    MinecraftClient.getInstance().player.sendMessage(Text.literal("发送的消息长度超过1950").setStyle(Style.EMPTY.withColor(0xFF0000)), false);
+                    MinecraftClient.getInstance().player.sendMessage(Component.literal("发送的消息长度超过1950").setStyle(Style.EMPTY.withColor(0xFF0000)), false);
             }
 
             // 设置最终的BMaxStrength值
