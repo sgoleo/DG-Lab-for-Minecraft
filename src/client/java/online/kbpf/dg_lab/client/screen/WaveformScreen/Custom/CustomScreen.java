@@ -1,12 +1,10 @@
 package online.kbpf.dg_lab.client.screen.WaveformScreen.Custom;
 
-
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import online.kbpf.dg_lab.client.entity.Waveform.ControlBar;
 import online.kbpf.dg_lab.client.entity.Waveform.Waveform;
@@ -20,9 +18,7 @@ import java.util.List;
 @Environment(EnvType.CLIENT)
 public class CustomScreen extends Screen {
 
-
-
-    private ButtonWidget add, delete;
+    private Button add, delete;
     private CustomListWidget customListWidget;
     protected static List<ControlBar> list = new ArrayList<>();
     protected String waveformKey;
@@ -38,7 +34,7 @@ public class CustomScreen extends Screen {
 
 
     @Override
-    public void close() {
+    public void onClose() {
         Screen backScreen = new WaveformConfigScreen();
         Waveform tmp = new Waveform();
         if(waveformMap.containsKey(this.waveformKey))
@@ -52,7 +48,7 @@ public class CustomScreen extends Screen {
         else
             waveformMap.replace(this.waveformKey, tmp);
 
-        client.setScreen(backScreen);
+        this.minecraft.setScreen(backScreen);
     }
 
     @Override
@@ -61,7 +57,7 @@ public class CustomScreen extends Screen {
         customListWidget = new CustomListWidget(client, width, height - 40, 20, 8);
 
 
-        add = ButtonWidget.builder(Component.literal((list.size() >= 348) ? "---MAX---" : "+"), button -> {
+        add = Button.builder(Component.literal((list.size() >= 348) ? "---MAX---" : "+"), button -> {
 
 
             if(list.size() < 348) {
@@ -73,9 +69,9 @@ public class CustomScreen extends Screen {
             }
             add.setMessage(Component.literal((list.size() >= 348) ? "---MAX---" : "+"));
 
-        }).dimensions((int) (width * 0.1), height - 17, (int) (width * 0.7), 15).build();
+        }).bounds((int) (width * 0.1), height - 17, (int) (width * 0.7), 15).build();
 
-        delete = ButtonWidget.builder(Component.literal("-"), button -> {
+        delete = Button.builder(Component.literal("-"), button -> {
 
             if(list.size() > 7) {
                 for (int i = 1; i <= 4; i++) {
@@ -84,7 +80,7 @@ public class CustomScreen extends Screen {
                 }
             }
             add.setMessage(Component.literal((list.size() >= 348) ? "---MAX---" : "+"));
-        }).dimensions((int) (width * 0.8), height - 17, (int) (width * 0.1), 15).build();
+        }).bounds((int) (width * 0.8), height - 17, (int) (width * 0.1), 15).build();
 
         for (int i = 0; i <list.size(); i++){
             customListWidget.addCustomEntry(new CustomListWidget.Entry(customListWidget, i));
@@ -93,9 +89,9 @@ public class CustomScreen extends Screen {
 
 
 
-        addDrawableChild(add);
-        addDrawableChild(delete);
-        addDrawableChild(customListWidget);
+        addRenderableWidget(add);
+        addRenderableWidget(delete);
+        addRenderableWidget(customListWidget);
 
     }
 

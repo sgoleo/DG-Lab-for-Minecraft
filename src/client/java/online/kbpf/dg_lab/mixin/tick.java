@@ -2,7 +2,7 @@ package online.kbpf.dg_lab.mixin;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.server.level.ServerPlayer;
 import online.kbpf.dg_lab.client.Config.StrengthConfig;
 import online.kbpf.dg_lab.client.entity.DGStrength;
@@ -70,7 +70,7 @@ public abstract class tick {
         BDelayTime = (BDelayTime > 0) ? BDelayTime - 1 : 0; // 如果BDelayTime大于0，减少1；否则设置为0
         webSocketServer.setDelayTime(ADelayTime, BDelayTime); // 设置更新后的等待时间
 
-        int AStrength = dgStrength.getAStrength(), BStrength = dgStrength.getBStrength(); // 获取A和B的强度
+        int AStrength = dgStrength.getAStrength(), BStrength = dgStrength.getBStrength(); // 获取A and B的强度
         int AMin = 0, BMin = 0;
         if(player != null){
             AMin = (int) (strengthConfig.getAMin() * ((player.getMaxHealth() - player.getHealth()) / player.getMaxHealth()));
@@ -160,7 +160,7 @@ public abstract class tick {
         if(!twoPlayerMode) return;
         Minecraft client = Minecraft.getInstance();
         // 1. 判断是否是单人模式
-        if(!client.isIntegratedServerRunning()) {
+        if(!client.isSingleplayer()) {
             quit2PMode();
             return;
         }
@@ -169,7 +169,7 @@ public abstract class tick {
         if(server != null && server.isPublished()){
 
 
-            if (server.getPlayerManager().getPlayer(secondPlayer) == null) {
+            if (server.getPlayerList().getPlayerByName(secondPlayer) == null) {
                 if(Health2P > 0.0F){
                     webSocketServer.sendStrengthToClient((Math.min(webSocketServer.getStrength().getBStrength() + secondPlayerQuitStrength, webSocketServer.getStrength().getBMaxStrength())), 2, 2);
                 }
@@ -177,7 +177,7 @@ public abstract class tick {
                 return;
             }
 
-            float health2P = server.getPlayerManager().getPlayer(secondPlayer).getHealth();
+            float health2P = server.getPlayerList().getPlayerByName(secondPlayer).getHealth();
 
             if (Health2P == -1.0F){
                 Health2P = health2P;

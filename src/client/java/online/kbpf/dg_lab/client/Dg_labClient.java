@@ -35,6 +35,7 @@ public class Dg_labClient implements ClientModInitializer {
     public static String secondPlayer = "null";
     public static int secondPlayerQuitStrength = 200;
 
+    private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(Dg_lab.MODID, "key_category"));
     private static KeyMapping keyBinding;
     private final Screen configScreen = new ConfigScreen();
 
@@ -60,12 +61,12 @@ public class Dg_labClient implements ClientModInitializer {
                 "打开配置界面",
                 InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_O,
-                KeyMapping.Category.createOrGet(Dg_lab.MODID)
+                CATEGORY
 
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (keyBinding.wasPressed()) {
+            while (keyBinding.consumeClick()) {
                 client.setScreen(configScreen);
             }
         });

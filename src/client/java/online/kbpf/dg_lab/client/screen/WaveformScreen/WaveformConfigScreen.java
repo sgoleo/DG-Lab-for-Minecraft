@@ -21,10 +21,10 @@ public class WaveformConfigScreen extends Screen {
     }
 
     @Override
-    public void close() {
+    public void onClose() {
         Screen configScreen = new ConfigScreen();
-        if (client != null) {
-            client.setScreen(configScreen);
+        if (this.minecraft != null) {
+            this.minecraft.setScreen(configScreen);
         }
         //上一级界面
     }

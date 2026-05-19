@@ -1,25 +1,21 @@
 package online.kbpf.dg_lab.client.screen.WaveformScreen.Custom;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.math.ColorHelper;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.Identifier;
 
-import static online.kbpf.dg_lab.client.screen.WaveformScreen.Custom.CustomScreen.list;
-
-public abstract class CustomSliderWidget extends SliderWidget {
+public abstract class CustomSliderWidget extends AbstractSliderButton {
 
     private boolean sliderFocused;
-    private static final Identifier TEXTURE = Identifier.ofVanilla("widget/slider");
-    private static final Identifier HIGHLIGHTED_TEXTURE = Identifier.ofVanilla("widget/slider_highlighted");
-    private static final Identifier HANDLE_TEXTURE = Identifier.ofVanilla("widget/slider_handle");
-    private static final Identifier HANDLE_HIGHLIGHTED_TEXTURE = Identifier.ofVanilla("widget/slider_handle_highlighted");
+    private static final Identifier TEXTURE = Identifier.withDefaultNamespace("widget/slider");
+    private static final Identifier HIGHLIGHTED_TEXTURE = Identifier.withDefaultNamespace("widget/slider_highlighted");
+    private static final Identifier HANDLE_TEXTURE = Identifier.withDefaultNamespace("widget/slider_handle");
+    private static final Identifier HANDLE_HIGHLIGHTED_TEXTURE = Identifier.withDefaultNamespace("widget/slider_handle_highlighted");
 
-    public CustomSliderWidget(int x, int y, int width, int height, Text text, double value) {
+    public CustomSliderWidget(int x, int y, int width, int height, Component text, double value) {
         super(x, y, width, height, text, value);
     }
 
@@ -29,18 +25,24 @@ public abstract class CustomSliderWidget extends SliderWidget {
     }
 
     @Override
-    public void renderWidget(GuiGraphics context, int mouseX, int mouseY, float delta) {
+    public void extractWidgetRenderState(final GuiGraphicsExtractor graphics, final int mouseX, final int mouseY, final float a) {
         Minecraft minecraftClient = Minecraft.getInstance();
 
-        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight(), ColorHelper.getWhite(this.alpha));
-        context.drawGuiTexture(RenderPipelines.GUI_TEXTURED, this.getHandleTexture(), this.getX() + (int)(this.value * (double)(this.width - 8)), this.getY(), 8, this.getHeight(), ColorHelper.getWhite(this.alpha));
-        int i = ColorHelper.withAlpha(this.alpha, this.active ? -1 : -6250336);
-        context.drawTextWithShadow(
-                minecraftClient.textRenderer,
+        int alphaVal = (int)(this.alpha * 255.0F) & 0xFF;
+        int whiteWithAlpha = 0x00FFFFFF | (alphaVal << 24);
+
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.getTexture(), this.getX(), this.getY(), this.getWidth(), this.getHeight(), whiteWithAlpha);
+        graphics.blitSprite(RenderPipelines.GUI_TEXTURED, this.getHandleTexture(), this.getX() + (int)(this.value * (double)(this.width - 8)), this.getY(), 8, this.getHeight(), whiteWithAlpha);
+        
+        int baseColor = this.active ? 0xFFFFFFFF : 0xFF9E9E9E;
+        int textColor = (baseColor & 0x00FFFFFF) | (alphaVal << 24);
+        
+        graphics.text(
+                minecraftClient.font,
                 this.getMessage(),
                 this.getX() + this.getWidth(),
                 this.getY(),
-                i | MathHelper.ceil(this.alpha * 255.0F) << 24
+                textColor
         );
     }
 
@@ -49,12 +51,7 @@ public abstract class CustomSliderWidget extends SliderWidget {
     }
 
     private Identifier getHandleTexture() {
-        return !this.hovered && !this.sliderFocused ? HANDLE_TEXTURE : HANDLE_HIGHLIGHTED_TEXTURE;
+        return !this.isHovered() && !this.sliderFocused ? HANDLE_TEXTURE : HANDLE_HIGHLIGHTED_TEXTURE;
     }
 
-    @Override
-    protected abstract void updateMessage();
-
-    @Override
-    protected abstract void applyValue();
 }

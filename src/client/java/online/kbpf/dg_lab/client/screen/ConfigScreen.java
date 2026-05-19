@@ -3,8 +3,9 @@ package online.kbpf.dg_lab.client.screen;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.Style;
 import online.kbpf.dg_lab.client.Dg_labClient;
 import online.kbpf.dg_lab.client.createQR.ToolQR;
 import online.kbpf.dg_lab.client.Config.WaveformConfig;
@@ -68,7 +69,7 @@ public class ConfigScreen extends Screen {
         Minecraft client = Minecraft.getInstance();
 
 
-        int width1 = client.getWindow().getScaledWidth(), height1 = client.getWindow().getScaledHeight();
+        int width1 = client.getWindow().getGuiScaledWidth(), height1 = client.getWindow().getGuiScaledHeight();
 
         CustomConfig = Button.builder(Component.literal("test"), button -> {
 //            client.setScreen(customScreen);
@@ -133,14 +134,14 @@ public class ConfigScreen extends Screen {
         MaxStrength = Button.builder(Component.literal((modConfig.isRenderingMax()) ? "開" : "關"), button -> {
             modConfig.setRenderingMax(!modConfig.isRenderingMax());
             MaxStrength.setMessage(Component.literal((modConfig.isRenderingMax()) ? "開" : "關"));
-        }).bounds(RenderingPositionY.getX() + RenderingPositionX.getWidth(), 140 - ButtonDistance - ButtonHeight, 12, ButtonHeight).tooltip(Tooltip.of(Component.literal("是否开启最大强度显示"))).build();
+        }).bounds(RenderingPositionY.getX() + RenderingPositionX.getWidth(), 140 - ButtonDistance - ButtonHeight, 12, ButtonHeight).tooltip(Tooltip.create(Component.literal("是否开启最大强度显示"))).build();
 
         saveFile = Button.builder(Component.literal("保存設定到文件"), button -> {
                     strengthConfig.savaFile();
                     modConfig.savaFile();
                     WaveformConfig.saveWaveform(waveformMap);
                 })
-                .bounds((int) ((double) width / 2 - (width * 0.4) - 5), 20, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.of(Component.literal("所有更改是临时更改\n点击此按钮保存到文件"))).build();
+                .bounds((int) ((double) width / 2 - (width * 0.4) - 5), 20, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.create(Component.literal("所有更改是临时更改\n点击此按钮保存到文件"))).build();
 
 
 
@@ -148,34 +149,34 @@ public class ConfigScreen extends Screen {
                     Screen WebSocketConfigScreen = new WebSocketConfigScreen();
                     client.setScreen(WebSocketConfigScreen);
                 })
-                .bounds(width / 2 + 5, 20, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.of(Component.literal("点击修改连接设置\n非必要无需修改"))).build();
+                .bounds(width / 2 + 5, 20, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.create(Component.literal("点击修改连接设置\n非必要无需修改"))).build();
 
         StrengthConfig = Button.builder(Component.literal("强度設定"), button -> {
             Screen strengthConfigScreen = new StrengthConfigScreen();
             client.setScreen(strengthConfigScreen);
-        }).bounds((int) ((double) width / 2 - (width * 0.4) - 5), 20 + ButtonHeight + ButtonDistance, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.of(Component.literal("点击修改强度设置"))).build();
+        }).bounds((int) ((double) width / 2 - (width * 0.4) - 5), 20 + ButtonHeight + ButtonDistance, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.create(Component.literal("点击修改强度设置"))).build();
 
         WaveFormConfig = Button.builder(Component.literal("波形設定"), button -> {
             Screen waveformConfigScreen = new WaveformConfigScreen();
             client.setScreen(waveformConfigScreen);
-        }).bounds(width / 2 + 5, 20 + ButtonHeight + ButtonDistance, (int) (width * 0.4), ButtonHeight).tooltip((Tooltip.of(Component.literal(":P")))).build();
+        }).bounds(width / 2 + 5, 20 + ButtonHeight + ButtonDistance, (int) (width * 0.4), ButtonHeight).tooltip((Tooltip.create(Component.literal(":P")))).build();
 
         createQR = Button.builder(Component.literal("創建連接二維碼並打開"), button -> {
             ToolQR.CreateQR();
-        }).bounds((int) ((double) width / 2 - (width * 0.4) - 5), 140 - ButtonDistance - ButtonHeight, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.of(Component.literal("图片默认生成于此地址:\n" + System.getProperty("user.dir")))).build();
+        }).bounds((int) ((double) width / 2 - (width * 0.4) - 5), 140 - ButtonDistance - ButtonHeight, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.create(Component.literal("图片默认生成于此地址:\n" + System.getProperty("user.dir")))).build();
 
 
         TwoPlayerMode = Button.builder(Component.literal((twoPlayerMode) ? "本地雙人模式：开" : "本地雙人模式：关"), button -> {
-            if(!client.isIntegratedServerRunning()) return;
-            IntegratedServer server = client.getServer();
+            if(!client.isSingleplayer()) return;
+            IntegratedServer server = client.getSingleplayerServer();
             if(!(server != null && server.isPublished())) return;
             twoPlayerMode = !twoPlayerMode;
             TwoPlayerMode.setMessage(Component.literal((twoPlayerMode) ? "本地雙人模式：开" : "本地雙人模式：关"));
-        }).bounds((int) ((double) width / 2 - (width * 0.4) - 5), 140 - (2 * (ButtonDistance + ButtonHeight)), (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.of(Component.literal("只有在单人模式开启局域网联机\n并且2p设置有人且在线才可启用\n2p退出游戏自动关闭\n本地双人模式每次启动游戏需要重新设置"))).build();
+        }).bounds((int) ((double) width / 2 - (width * 0.4) - 5), 140 - (2 * (ButtonDistance + ButtonHeight)), (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.create(Component.literal("只有在单人模式开启局域网联机\n并且2p设置有人且在线才可启用\n2p退出游戏自动关闭\n本地双人模式每次启动游戏需要重新设置"))).build();
 
         secondPlayerName = new EditBox(this.font, (int) ((double) width / 2 + 6 + (int) (width * 0.2)), 140 - (2 * (ButtonDistance + ButtonHeight)), (int) (width * 0.2), ButtonHeight, Component.literal("输入玩家名字"));
         secondPlayerName.setMaxLength(16);
-        secondPlayerName.setHint(Component.literal(secondPlayer).styled(style -> style.withColor(TextColor.fromRgb(0xaaaaaa))));
+        secondPlayerName.setHint(Component.literal(secondPlayer).withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xaaaaaa))));
         secondPlayerName.setResponder(this::secondPlayerNameText);
 
 
@@ -200,8 +201,8 @@ public class ConfigScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        super.render(context, mouseX, mouseY, delta);
+    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+        super.extractRenderState(context, mouseX, mouseY, delta);
         TwoPlayerMode.setMessage(Component.literal((twoPlayerMode) ? "本地雙人模式：開" : "本地雙人模式：關"));
     }
 

@@ -28,7 +28,7 @@ public class ToolQR {
         if(ipAddress.equals("error")) {
             Minecraft client = Minecraft.getInstance();
             if (client.player != null) {
-                client.player.sendMessage(Component.literal("没有指定的ip地址").withColor(0xFF5555));
+                client.player.sendSystemMessage(Component.literal("没有指定的ip地址").withColor(0xFF5555));
             }
         }
         else {

@@ -1,30 +1,30 @@
 package online.kbpf.dg_lab.client.screen.WaveformScreen.Custom;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
-import net.minecraft.client.gui.widget.SliderWidget;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.events.ContainerEventHandler;
+import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.Style;
 import online.kbpf.dg_lab.client.entity.Waveform.ControlBar;
 
 import static online.kbpf.dg_lab.client.screen.WaveformScreen.Custom.CustomScreen.list;
 
-
-
-
 import java.util.List;
+import org.jspecify.annotations.Nullable;
 
-public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> {
-
-
+public class CustomListWidget extends AbstractSelectionList<CustomListWidget.Entry> {
 
     public CustomListWidget(Minecraft minecraftClient, int width, int height, int y, int itemHeight) {
         super(minecraftClient, width, height, y, itemHeight);
         this.width = width;
+    }
+
+    @Override
+    protected void updateWidgetNarration(net.minecraft.client.gui.narration.NarrationElementOutput output) {
     }
 
     //修改左右宽度
@@ -37,12 +37,9 @@ public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> 
         return this.width; // 宽度设置为屏幕宽度
     }
     @Override
-    protected int getScrollbarX() {
+    protected int scrollBarX() {
         return this.getRight() - 6; // 滚动条紧贴右侧
     }
-
-
-
 
 
     public void addCustomEntry(Entry entry) {
@@ -64,17 +61,28 @@ public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> 
     }
 
 
-    public static class Entry extends ElementListWidget.Entry<Entry> {
+    public static class Entry extends AbstractSelectionList.Entry<Entry> implements ContainerEventHandler {
 
-        final Text manual = Component.literal("手动").styled(style -> style.withBold(true).withUnderline(true)), automatic = Component.literal("平均").styled(style -> style.withColor(TextColor.fromRgb(0xAAAAAA)).withBold(true));
+        final Component manual = Component.literal("手动").withStyle(Style.EMPTY.withBold(true).withUnderlined(true)), automatic = Component.literal("平均").withStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xAAAAAA)).withBold(true));
 
         private final CustomListWidget parent; // 添加对父列表的引用
 
-        ButtonWidget S_enable, F_enable;
+        Button S_enable, F_enable;
         CustomSliderWidget strength, frequency;
         ControlBar controlBar;
         int index;
+        private GuiEventListener focused;
+        private boolean dragging;
 
+        @Override
+        public boolean isDragging() {
+            return this.dragging;
+        }
+
+        @Override
+        public void setDragging(boolean dragging) {
+            this.dragging = dragging;
+        }
 
         public Entry (CustomListWidget parent, int index){ // 修改构造函数，添加 parent 参数
             this.parent = parent; // 保存父列表引用
@@ -82,21 +90,21 @@ public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> 
             this.controlBar = list.get(this.index);
 
 
-            S_enable = ButtonWidget.builder(Component.literal((list.get(this.index).isS_on_off())? manual : automatic), button -> {
+            S_enable = Button.builder((list.get(this.index).isS_on_off())? manual : automatic, button -> {
                 this.controlBar.setS_on_off(!this.controlBar.isS_on_off());
-                S_enable.setMessage(Component.literal((this.controlBar.isS_on_off()) ? manual : automatic));
+                S_enable.setMessage((this.controlBar.isS_on_off()) ? manual : automatic);
                 list.set(this.index, this.controlBar);
                 if(!controlBar.isS_on_off())
                     updateStrength(getBackStrengthOff(Entry.this.index), getNextStrengthOff(Entry.this.index));
-            }).build();
+            }).bounds(0, 0, 22, 8).build();
 
-            F_enable = ButtonWidget.builder(Component.literal((list.get(this.index).isF_on_off())? manual : automatic), button -> {
+            F_enable = Button.builder((list.get(this.index).isF_on_off())? manual : automatic, button -> {
                 this.controlBar.setF_on_off(!this.controlBar.isF_on_off());
-                F_enable.setMessage(Component.literal((this.controlBar.isF_on_off()) ? manual : automatic));
+                F_enable.setMessage((this.controlBar.isF_on_off()) ? manual : automatic);
                 list.set(this.index, this.controlBar);
                 if(!controlBar.isF_on_off())
                     updateFrequency(getBackFrequencyOff(Entry.this.index), getNextFrequencyOff(Entry.this.index));
-            }).build();
+            }).bounds(0, 0, 22, 8).build();
 
             strength = new CustomSliderWidget(0, 0, 100 ,15, Component.literal(String.valueOf(list.get(this.index).getStrength())), list.get(this.index).getStrength() * 0.01) {
 
@@ -215,52 +223,46 @@ public class CustomListWidget extends ElementListWidget<CustomListWidget.Entry> 
             return i;
         }
 
-
+        @Override
+        public void setFocused(@Nullable GuiEventListener focused) {
+            this.focused = focused;
+        }
 
         @Override
-        public List<? extends Selectable> selectableChildren() {
+        @Nullable
+        public GuiEventListener getFocused() {
+            return this.focused;
+        }
+
+        @Override
+        public List<? extends GuiEventListener> children() {
             if(!list.get(index).isS_on_off() && !list.get(index).isF_on_off()) return List.of(S_enable, F_enable);
             if(!list.get(index).isF_on_off()) return List.of(S_enable, F_enable, strength);
             if(!list.get(index).isS_on_off()) return List.of(S_enable, F_enable, frequency);
             return List.of(S_enable, F_enable, strength, frequency);
-
         }
 
         @Override
-        public List<? extends Element> children() {
-            if(!list.get(index).isS_on_off() && !list.get(index).isF_on_off()) return List.of(S_enable, F_enable);
-            if(!list.get(index).isF_on_off()) return List.of(S_enable, F_enable, strength);
-            if(!list.get(index).isS_on_off()) return List.of(S_enable, F_enable, frequency);
-            return List.of(S_enable, F_enable, strength, frequency);
-
-
-        }
-
-        @Override
-        public void render(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        public void extractContent(GuiGraphicsExtractor context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
             // 保存索引、位置和大小等信息
             int entryWidth = ((CustomListWidget)this.parent).getRowWidth();
             int y = this.getY();
             int x = ((CustomListWidget)this.parent).getRowLeft();
 
-            F_enable.setDimensionsAndPosition(22, 8, (int) (entryWidth * 0.015), y);
-            frequency.setDimensionsAndPosition((int) (entryWidth * 0.2), 8, F_enable.getX() + 22, y);
-            S_enable.setDimensionsAndPosition(22, 8, frequency.getX() + frequency.getWidth() + 20, y);
-            strength.setDimensionsAndPosition((int) (entryWidth * 0.6), 8, S_enable.getX() + 22, y);
+            F_enable.setRectangle(22, 8, (int) (entryWidth * 0.015), y);
+            frequency.setRectangle((int) (entryWidth * 0.2), 8, F_enable.getX() + 22, y);
+            S_enable.setRectangle(22, 8, frequency.getX() + frequency.getWidth() + 20, y);
+            strength.setRectangle((int) (entryWidth * 0.6), 8, S_enable.getX() + 22, y);
             if(list.get(this.index) != null) {
                 strength.setValue(list.get(this.index).getStrength());
                 frequency.setValue(list.get(this.index).getFrequency());
             }
 
-            F_enable.render(context, mouseX, mouseY, deltaTicks);
-            frequency.render(context, mouseX, mouseY, deltaTicks);
-            S_enable.render(context, mouseX, mouseY, deltaTicks);
-            strength.render(context, mouseX, mouseY, deltaTicks);
+            F_enable.extractRenderState(context, mouseX, mouseY, deltaTicks);
+            frequency.extractRenderState(context, mouseX, mouseY, deltaTicks);
+            S_enable.extractRenderState(context, mouseX, mouseY, deltaTicks);
+            strength.extractRenderState(context, mouseX, mouseY, deltaTicks);
         }
     }
-
-
-
-
 
 }
