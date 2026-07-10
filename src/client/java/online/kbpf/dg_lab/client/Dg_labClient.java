@@ -15,7 +15,6 @@ import online.kbpf.dg_lab.client.webSocketServer.webSocketServer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.KeyMapping;
 import com.mojang.blaze3d.platform.InputConstants;
 import org.lwjgl.glfw.GLFW;
@@ -37,7 +36,6 @@ public class Dg_labClient implements ClientModInitializer {
 
     private static final KeyMapping.Category CATEGORY = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(Dg_lab.MODID, "key_category"));
     private static KeyMapping keyBinding;
-    private final Screen configScreen = new ConfigScreen();
 
     private static final Identifier HUD_ID = Identifier.fromNamespaceAndPath("dglab", "hud");
 
@@ -67,7 +65,7 @@ public class Dg_labClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyBinding.consumeClick()) {
-                client.setScreen(configScreen);
+                client.setScreen(new ConfigScreen());
             }
         });
         //指令定义
