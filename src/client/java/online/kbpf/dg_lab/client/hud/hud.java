@@ -2,7 +2,7 @@ package online.kbpf.dg_lab.client.hud;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElement;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.network.chat.Component;
 import static online.kbpf.dg_lab.client.Dg_labClient.modConfig;
@@ -12,7 +12,7 @@ public class hud implements HudElement {
 
     //屏幕強度顯示
     @Override
-    public void render(GuiGraphics guiGraphics, DeltaTracker tickDelta) {
+    public void extractRenderState(GuiGraphicsExtractor guiGraphics, DeltaTracker tickDelta) {
 
         Minecraft client = Minecraft.getInstance();
         if (client.player != null && client.level != null && (modConfig.getRenderingPositionX() < client.getWindow().getGuiScaledWidth() || modConfig.getRenderingPositionY() < client.getWindow().getGuiScaledHeight())) {

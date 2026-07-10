@@ -14,7 +14,7 @@ import online.kbpf.dg_lab.client.screen.ConfigScreen;
 import online.kbpf.dg_lab.client.webSocketServer.webSocketServer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.KeyMapping;
 import com.mojang.blaze3d.platform.InputConstants;
@@ -57,7 +57,7 @@ public class Dg_labClient implements ClientModInitializer {
         hud tntHud = new hud();
         HudElementRegistry.addLast(HUD_ID, tntHud);
 
-        keyBinding = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+        keyBinding = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "打开配置界面",
                 InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_O,

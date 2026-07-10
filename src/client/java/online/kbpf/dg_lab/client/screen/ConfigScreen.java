@@ -1,7 +1,6 @@
 package online.kbpf.dg_lab.client.screen;
 
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.network.chat.TextColor;
@@ -201,8 +200,8 @@ public class ConfigScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
-        super.extractRenderState(context, mouseX, mouseY, delta);
+    public void tick() {
+        super.tick();
         TwoPlayerMode.setMessage(Component.literal((twoPlayerMode) ? "本地雙人模式：開" : "本地雙人模式：關"));
     }
 
