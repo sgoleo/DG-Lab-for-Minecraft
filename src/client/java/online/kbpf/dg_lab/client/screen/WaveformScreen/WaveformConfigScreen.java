@@ -24,7 +24,7 @@ public class WaveformConfigScreen extends Screen {
     public void onClose() {
         Screen configScreen = new ConfigScreen();
         if (this.minecraft != null) {
-            this.minecraft.setScreen(configScreen);
+            this.minecraft.gui.setScreen(configScreen);
         }
         //上一级界面
     }

@@ -103,7 +103,7 @@ public class WaveformListWidget extends AbstractSelectionList<WaveformListWidget
 
             customButton = Button.builder(Component.literal("✏"), button -> {
                 Screen customScreen = new CustomScreen(key);
-                client.setScreen(customScreen);
+                client.gui.setScreen(customScreen);
             }).bounds(0, 0, 15, ButtonHeight).tooltip(Tooltip.create(Component.literal("点击修改波形"))).build();
 
             copyButton = Button.builder(Component.literal("\uD83D\uDCC4"), button -> {

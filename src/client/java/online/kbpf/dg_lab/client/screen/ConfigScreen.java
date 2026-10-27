@@ -71,7 +71,7 @@ public class ConfigScreen extends Screen {
         int width1 = client.getWindow().getGuiScaledWidth(), height1 = client.getWindow().getGuiScaledHeight();
 
         CustomConfig = Button.builder(Component.literal("test"), button -> {
-//            client.setScreen(customScreen);
+//            client.gui.setScreen(customScreen);
         }).bounds((int) ((double) width / 2 - (width * 0.4) - 5), 140, (int) (width * 0.4), ButtonHeight).build();
 
 
@@ -146,18 +146,18 @@ public class ConfigScreen extends Screen {
 
         webSocketConfig = Button.builder(Component.literal("連接設定"), button -> {
                     Screen WebSocketConfigScreen = new WebSocketConfigScreen();
-                    client.setScreen(WebSocketConfigScreen);
+                    client.gui.setScreen(WebSocketConfigScreen);
                 })
                 .bounds(width / 2 + 5, 20, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.create(Component.literal("点击修改连接设置\n非必要无需修改"))).build();
 
         StrengthConfig = Button.builder(Component.literal("强度設定"), button -> {
             Screen strengthConfigScreen = new StrengthConfigScreen();
-            client.setScreen(strengthConfigScreen);
+            client.gui.setScreen(strengthConfigScreen);
         }).bounds((int) ((double) width / 2 - (width * 0.4) - 5), 20 + ButtonHeight + ButtonDistance, (int) (width * 0.4), ButtonHeight).tooltip(Tooltip.create(Component.literal("点击修改强度设置"))).build();
 
         WaveFormConfig = Button.builder(Component.literal("波形設定"), button -> {
             Screen waveformConfigScreen = new WaveformConfigScreen();
-            client.setScreen(waveformConfigScreen);
+            client.gui.setScreen(waveformConfigScreen);
         }).bounds(width / 2 + 5, 20 + ButtonHeight + ButtonDistance, (int) (width * 0.4), ButtonHeight).tooltip((Tooltip.create(Component.literal(":P")))).build();
 
         createQR = Button.builder(Component.literal("創建連接二維碼並打開"), button -> {
@@ -166,7 +166,7 @@ public class ConfigScreen extends Screen {
 
 
         TwoPlayerMode = Button.builder(Component.literal((twoPlayerMode) ? "本地雙人模式：开" : "本地雙人模式：关"), button -> {
-            if(!client.isSingleplayer()) return;
+            if(!client.hasSingleplayerServer()) return;
             IntegratedServer server = client.getSingleplayerServer();
             if(!(server != null && server.isPublished())) return;
             twoPlayerMode = !twoPlayerMode;

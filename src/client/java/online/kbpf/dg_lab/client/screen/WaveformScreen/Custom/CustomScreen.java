@@ -48,7 +48,7 @@ public class CustomScreen extends Screen {
         else
             waveformMap.replace(this.waveformKey, tmp);
 
-        this.minecraft.setScreen(backScreen);
+        this.minecraft.gui.setScreen(backScreen);
     }
 
     @Override

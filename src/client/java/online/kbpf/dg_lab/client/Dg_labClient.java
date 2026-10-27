@@ -17,7 +17,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import com.mojang.blaze3d.platform.InputConstants;
-import org.lwjgl.glfw.GLFW;
+import org.lwjgl.sdl.SDLScancode;
 
 import java.net.InetSocketAddress;
 import java.util.Map;
@@ -57,15 +57,15 @@ public class Dg_labClient implements ClientModInitializer {
 
         keyBinding = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "打开配置界面",
-                InputConstants.Type.KEYSYM,
-                GLFW.GLFW_KEY_O,
+                InputConstants.Type.KEYBOARD,
+                SDLScancode.SDL_SCANCODE_O,
                 CATEGORY
 
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while (keyBinding.consumeClick()) {
-                client.setScreen(new ConfigScreen());
+                client.gui.setScreen(new ConfigScreen());
             }
         });
         //指令定义

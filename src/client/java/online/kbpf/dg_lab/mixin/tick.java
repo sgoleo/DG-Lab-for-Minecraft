@@ -160,7 +160,7 @@ public abstract class tick {
         if(!twoPlayerMode) return;
         Minecraft client = Minecraft.getInstance();
         // 1. 判断是否是单人模式
-        if(!client.isSingleplayer()) {
+        if(!client.hasSingleplayerServer()) {
             quit2PMode();
             return;
         }

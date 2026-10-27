@@ -54,7 +54,7 @@ public class StrengthConfigScreen extends Screen {
     @Override
     public void onClose() {
         Screen configScreen = new ConfigScreen();
-        this.minecraft.setScreen(configScreen);
+        this.minecraft.gui.setScreen(configScreen);
     }
 
     @Override
