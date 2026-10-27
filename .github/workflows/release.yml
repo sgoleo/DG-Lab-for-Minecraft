@@ -35,4 +35,8 @@ jobs:
       - name: Upload jars to release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ github.event.release.tag_name }}" build/libs/*.jar --clobber
+        run: |
+          # Also attach the Fabric API jar the mod was built against
+          v=$(grep '^fabric_version=' gradle.properties | cut -d= -f2)
+          curl -fsSL -o "fabric-api-$v.jar" "https://github.com/FabricMC/fabric/releases/download/${v//+/%2B}/fabric-api-${v//+/%2B}.jar"
+          gh release upload "${{ github.event.release.tag_name }}" build/libs/*.jar "fabric-api-$v.jar" --clobber
