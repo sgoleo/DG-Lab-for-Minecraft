@@ -16,7 +16,7 @@ Important Notes
 1.  Ensure your DG\_LAB device is running version 3.x before use
 2.  High-intensity stimulation parameters should be configured under professional guidance
 
-Now Supports 26.1.2 / 1.21.X / 1.20.X / 1.19.X / 1.18.X 
+Now Supports 26.3 / 26.1.2 / 1.21.X / 1.20.X / 1.19.X / 1.18.X 
 
 \=======================================================================
 
